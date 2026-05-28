@@ -79,11 +79,12 @@
 
             <div class="relative">
                 <div class="mx-auto h-24 w-24 rounded-full border border-cyberCyan/40 bg-slate-950 shadow-[0_0_35px_rgba(0,240,255,0.25)] flex items-center justify-center overflow-hidden font-mono text-3xl font-black text-cyberCyan">
-                    <img src="https://github.com/zagzy8776.png?size=240"
+                    <img src="profile.jpg"
                          alt="Zagzy profile picture"
                          class="h-full w-full object-cover"
                          loading="eager"
-                         onerror="this.style.display='none'; this.parentElement.textContent='Z';">
+                         data-fallback="https://github.com/zagzy8776.png?size=240"
+                         onerror="if (this.dataset.fallback) { this.src = this.dataset.fallback; this.removeAttribute('data-fallback'); } else { this.style.display='none'; this.parentElement.textContent='Z'; }">
                 </div>
 
                 <div class="inline-flex items-center gap-2 mt-4 rounded-full border border-emerald-400/30 bg-emerald-500/10 px-3 py-1 font-mono text-[11px] uppercase tracking-wider text-emerald-300">
@@ -358,6 +359,30 @@
             </article>
         </section>
 
+        <!-- PORTFOLIO QR CODE -->
+        <section class="glass-panel rounded-2xl p-5 text-center space-y-4">
+            <div>
+                <h2 class="font-mono text-sm font-black uppercase tracking-wider text-white">Scan My Portfolio</h2>
+                <p class="mt-1 text-xs leading-relaxed text-slate-400">Share this page quickly with clients, friends, and recruiters.</p>
+            </div>
+
+            <div class="mx-auto w-fit rounded-2xl border border-cyberCyan/30 bg-white p-3 shadow-[0_0_25px_rgba(0,240,255,0.18)]">
+                <img id="portfolio-qr"
+                     src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=https%3A%2F%2Fgithub.com%2Fzagzy8776%2Fportfolio"
+                     alt="QR code for Zagzy portfolio"
+                     class="h-40 w-40 rounded-lg"
+                     loading="lazy">
+            </div>
+
+            <a id="portfolio-link"
+               href="https://github.com/zagzy8776/portfolio"
+               target="_blank"
+               rel="noopener noreferrer"
+               class="block break-all font-mono text-[11px] text-cyberCyan hover:underline">
+                https://github.com/zagzy8776/portfolio
+            </a>
+        </section>
+
         <!-- CONTACT / FOOTER -->
         <section class="glass-panel rounded-2xl p-5 text-center space-y-4">
             <h2 class="font-mono text-base font-black uppercase tracking-wider text-white">Let’s build something useful</h2>
@@ -404,6 +429,18 @@
             const progressBar = document.getElementById('progress-bar');
             const percentText = document.getElementById('loading-percentage');
             const statusText = document.getElementById('loading-status');
+            const qrImage = document.getElementById('portfolio-qr');
+            const portfolioLink = document.getElementById('portfolio-link');
+
+            const currentPageUrl = window.location.href.split('#')[0];
+            if (qrImage) {
+                qrImage.src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(currentPageUrl)}`;
+            }
+
+            if (portfolioLink) {
+                portfolioLink.href = currentPageUrl;
+                portfolioLink.innerText = currentPageUrl;
+            }
 
             if (!overlay || !mainContent || !progressBar || !percentText || !statusText) return;
 
